@@ -16,7 +16,7 @@ private:
 	const std::vector<std::string> _validBoolTrueNames = {"true", "on", "yes", "y", "1"};
 public:
 	explicit DataBase(std::string path = "storage.txt");
-	~DataBase() = default;
+	~DataBase();
 
 	/**
 	 * Сохранение данных на диск
@@ -115,6 +115,10 @@ DataBase::DataBase(std::string path) :
 		_data.emplace(keyStr, valueStr);
 	}
 
+}
+
+DataBase::~DataBase() {
+	this->save();
 }
 
 void DataBase::save() {
