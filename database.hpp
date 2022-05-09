@@ -131,6 +131,15 @@ bool DataBase::exists(std::string key) const {
 	return it != _data.end();
 }
 
+void DataBase::set(std::string key, std::string value) {
+	if (exists(key)) {
+		_data.at(key) = value;
+	}
+	else {
+		_data.emplace(key, value);
+	}
+}
+
 void DataBase::printMap() {
 	for (const auto& [key, value] : _data) {
 		std::cout << '[' << key << "] = " << value << "; ";

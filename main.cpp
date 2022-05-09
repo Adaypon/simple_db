@@ -15,5 +15,10 @@ int main() {
 	assert(db.exists("test") == true);
 	assert(db.exists("test2") == false);
 
+	db.set("test", "new");
+	db.printMap();
+	db.set("name", "Vasya");
+	db.printMap();
+
 	return 0;
 }
