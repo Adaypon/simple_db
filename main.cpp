@@ -3,9 +3,6 @@
 #include <algorithm>
 #include "database.hpp"
 
-DataBase db;
-bool quitFlag = false;
-
 std::string startText = "=== Simple key-value database ===\n\n";
 std::string help = "Type HELP command for more info.\n";
 std::string helpPrint = "PRINT - Print all keys and values.\n";
@@ -38,62 +35,70 @@ std::vector<std::string> parseCommand(std::string str) {
 	return parsedString;
 }
 
-void handler(std::vector<std::string> commands) {
-	if (commands[0] == "help") {
-		clearScreen();
-		std::cout << helpPrint << helpKeys << helpSet << helpGet << helpDel << helpFlush << helpQuit << std::endl;
-	}
-	else if (commands[0] == "keys" && commands.size() == 2) {
-		std::vector<std::string> keys = db.keys(commands[1]);
-		if (!keys.empty()) {
-			std::cout << "KEYS: ";
-			for (const auto& key : keys) {
-				std::cout << key << " ";
-			}
-			std::cout << std::endl;
-		}
-	}
-	else if (commands[0] == "exists" && commands.size() == 2) {
-		std::cout << std::boolalpha << db.exists(commands[1]) << std::endl;
-	}
-	else if (commands[0] == "set" && commands.size() == 3) {
-		db.set(commands[1], commands[2]);
-		db.save();
-		std::cout << "OK" << std::endl;
-	}
-	else if (commands[0] == "get" && commands.size() == 2) {
-		std::cout << db.get(commands[1]) << std::endl;
-	}
-	else if (commands[0] == "del" && commands.size() == 2) {
-		std::cout << std::boolalpha << db.del(commands[1]) << std::endl;
-		db.save();
-	}
-	else if (commands[0] == "flushall" && commands.size() == 1) {
-		db.flushAll();
-		db.save();
-		std::cout << "FLUSH" << std::endl;
-	}
-	else if (commands[0] == "print" && commands.size() == 1) {
-		db.printMap();
-	}
-	else if (commands[0] == "quit" && commands.size() == 1) {
-		quitFlag = true;
-	}
-	else {
-		std::cout << "UNKNOWN COMMAND OR WRONG PARAMETERS" << std::endl;
-	}
-}
-
+// TODO make handler class
 int main() {
-	clearScreen();
-	std::cout << startText;
-	std::cout << help << std::endl;
-	
-	std::string input = "";
-	while (!quitFlag) {
-		std::cout << "> ";
-		std::getline(std::cin, input);
-		handler(parseCommand(input));
+	try {
+		DataBase db;
+		bool quitFlag = false;
+		clearScreen();
+		std::cout << startText;
+		std::cout << help << std::endl;
+		
+		std::string input = "";
+		while (!quitFlag) {
+			std::cout << "> ";
+			std::getline(std::cin, input);
+			if (!input.empty()) {
+				std::vector<std::string> commands = parseCommand(input);
+				if (commands[0] == "help") {
+					clearScreen();
+					std::cout << helpPrint << helpKeys << helpSet << helpGet << helpDel << helpFlush << helpQuit << std::endl;
+				}
+				else if (commands[0] == "keys" && commands.size() == 2) {
+					std::vector<std::string> keys = db.keys(commands[1]);
+					if (!keys.empty()) {
+						std::cout << "KEYS: ";
+						for (const auto& key : keys) {
+							std::cout << key << " ";
+						}
+						std::cout << std::endl;
+					}
+				}
+				else if (commands[0] == "exists" && commands.size() == 2) {
+					std::cout << std::boolalpha << db.exists(commands[1]) << std::endl;
+				}
+				else if (commands[0] == "set" && commands.size() == 3) {
+					db.set(commands[1], commands[2]);
+					db.save();
+					std::cout << "OK" << std::endl;
+				}
+				else if (commands[0] == "get" && commands.size() == 2) {
+					std::cout << db.get(commands[1]) << std::endl;
+				}
+				else if (commands[0] == "del" && commands.size() == 2) {
+					std::cout << std::boolalpha << db.del(commands[1]) << std::endl;
+					db.save();
+				}
+				else if (commands[0] == "flushall" && commands.size() == 1) {
+					db.flushAll();
+					db.save();
+					std::cout << "FLUSH" << std::endl;
+				}
+				else if (commands[0] == "print" && commands.size() == 1) {
+					db.printMap();
+				}
+				else if (commands[0] == "quit" && commands.size() == 1) {
+					quitFlag = true;
+				}
+				else {
+					std::cout << "UNKNOWN COMMAND OR WRONG PARAMETERS" << std::endl;
+				}
+			}
+		}
+		return 0;
 	}
-	return 0;
+	catch (const std::exception& e) {
+		std::cerr << e.what() << std::endl;
+		return 1;
+	}
 }

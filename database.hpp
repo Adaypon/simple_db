@@ -89,7 +89,7 @@ DataBase::DataBase(std::string path) :
 	}
 	else {
 		std::cerr << "Can't open file " << _fileName << std::endl;
-		// TODO throw exception
+		throw std::invalid_argument("Unable to load the file");
 	}
 	fin.close();
 
