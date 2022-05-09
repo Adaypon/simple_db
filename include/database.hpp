@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <exception>
 #include <regex>
+#include <filesystem>
 
 class DataBase {
 private:
@@ -74,46 +75,47 @@ public:
 DataBase::DataBase(std::string path) :
 	_fileName(path)
 {
-	std::string str;
-	std::vector<std::string> fileCache;
-
-	std::ifstream fin;
-	fin.open(_fileName);
-	if (fin.is_open()) {
-		while (!fin.eof()) {
-			if (getline(fin, str) && !(str.length() == 1 && isspace(str[0]))) {
-				fileCache.push_back(str);
+	if (std::filesystem::exists(_fileName)) {
+		std::string str;
+		std::vector<std::string> fileCache;
+		
+		std::ifstream fin;
+		fin.open(_fileName);
+			if (fin.is_open()) {
+				while (!fin.eof()) {
+					if (getline(fin, str) && !(str.length() == 1 && isspace(str[0]))) {
+						fileCache.push_back(str);
+					}
+				}
 			}
+			else {
+				std::cerr << "Can't open file " << _fileName << std::endl;
+				throw std::invalid_argument("Unable to load the file");
+			}
+		fin.close();
+		
+		std::string keyStr;
+		std::string valueStr;
+
+		for (const auto& elem : fileCache) {
+			// inserting key
+			size_t first = 0;
+			size_t last = elem.find('=');
+			keyStr = elem.substr(first, last);
+
+			// inserting value
+			std::swap(first, last);
+			++first;
+			last = elem.size() - 1;
+
+			valueStr = elem.substr(first, last);
+			if (!valueStr.empty() && valueStr[valueStr.size() - 1] == '\r') {
+				valueStr.erase(valueStr.size() - 1);
+			}
+
+			_data.emplace(keyStr, valueStr);
 		}
 	}
-	else {
-		std::cerr << "Can't open file " << _fileName << std::endl;
-		throw std::invalid_argument("Unable to load the file");
-	}
-	fin.close();
-
-	std::string keyStr;
-	std::string valueStr;
-
-	for (const auto& elem : fileCache) {
-		// inserting key
-		size_t first = 0;
-		size_t last = elem.find('=');
-		keyStr = elem.substr(first, last);
-
-		// inserting value
-		std::swap(first, last);
-		++first;
-		last = elem.size() - 1;
-
-		valueStr = elem.substr(first, last);
-		if (!valueStr.empty() && valueStr[valueStr.size() - 1] == '\r') {
-			valueStr.erase(valueStr.size() - 1);
-		}
-
-		_data.emplace(keyStr, valueStr);
-	}
-
 }
 
 DataBase::~DataBase() {
