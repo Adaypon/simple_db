@@ -1,4 +1,5 @@
 #include "database.hpp"
+#include <cassert>
 
 int main() {
 	DataBase db("storage.txt");
@@ -11,5 +12,8 @@ int main() {
     }
     std::cout << std::endl;
 	
+	assert(db.exists("test") == true);
+	assert(db.exists("test2") == false);
+
 	return 0;
 }

@@ -31,6 +31,11 @@ public:
 	std::vector<std::string> keys() const;
 
 	/**
+	 * Проверить сущестование ключа
+	 */
+	bool exists(std::string key) const;
+
+	/**
 	 * Установить значение по ключу.
 	 * Если ключ <key> существует, перезаписывает значение
 	 * 
@@ -119,6 +124,11 @@ std::vector<std::string> DataBase::keys() const {
 		keys.push_back(elem.first);
 	}
 	return keys;
+}
+
+bool DataBase::exists(std::string key) const {
+	auto it = _data.find(key);
+	return it != _data.end();
 }
 
 void DataBase::printMap() {
