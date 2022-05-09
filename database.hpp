@@ -117,6 +117,20 @@ DataBase::DataBase(std::string path) :
 
 }
 
+void DataBase::save() {
+	std::ofstream fout;
+	fout.open(_fileName);
+	if (fout.is_open()) {
+		for (const auto& elem : _data) {
+			fout << elem.first << "=" << elem.second << std::endl;
+		}
+	}
+	else {
+		std::cerr << "Can't open file for saving" << std::endl;
+	}
+	fout.close();
+}
+
 // TODO make pattern search
 std::vector<std::string> DataBase::keys() const {
 	std::vector<std::string> keys;
