@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "database.hpp"
 
-DataBase db("storage.txt");
+DataBase db;
 bool quitFlag = false;
 
 std::string startText = "=== Simple key-value database ===\n\n";

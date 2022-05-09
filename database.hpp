@@ -15,7 +15,7 @@ private:
 	std::string _fileName;
 	const std::vector<std::string> _validBoolTrueNames = {"true", "on", "yes", "y", "1"};
 public:
-	explicit DataBase(std::string path);
+	explicit DataBase(std::string path = "storage.txt");
 	~DataBase() = default;
 
 	/**
