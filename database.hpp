@@ -13,7 +13,6 @@ class DataBase {
 private:
 	std::map<std::string, std::string> _data;
 	std::string _fileName;
-	const std::vector<std::string> _validBoolTrueNames = {"true", "on", "yes", "y", "1"};
 public:
 	explicit DataBase(std::string path = "storage.txt");
 	~DataBase();
