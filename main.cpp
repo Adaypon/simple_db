@@ -25,6 +25,9 @@ int main() {
 
 	std::cout << db.del("empty") << std::endl;
 	db.printMap();
+
+	db.flushAll();
+	db.printMap();
 	
 	return 0;
 }

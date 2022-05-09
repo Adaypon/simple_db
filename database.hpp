@@ -158,6 +158,10 @@ int DataBase::del(std::string key) {
 	return 0;
 }
 
+void DataBase::flushAll() {
+	_data.clear();
+}
+
 void DataBase::printMap() {
 	for (const auto& [key, value] : _data) {
 		std::cout << '[' << key << "] = " << value << "; ";
