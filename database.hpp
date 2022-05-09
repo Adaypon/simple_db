@@ -112,6 +112,15 @@ DataBase::DataBase(std::string path) :
 
 }
 
+// TODO make pattern search
+std::vector<std::string> DataBase::keys() const {
+	std::vector<std::string> keys;
+	for (const auto& elem : _data) {
+		keys.push_back(elem.first);
+	}
+	return keys;
+}
+
 void DataBase::printMap() {
 	for (const auto& [key, value] : _data) {
 		std::cout << '[' << key << "] = " << value << "; ";
