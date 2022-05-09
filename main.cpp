@@ -65,7 +65,7 @@ int main() {
 					}
 				}
 				else if (commands[0] == "exists" && commands.size() == 2) {
-					std::cout << std::boolalpha << db.exists(commands[1]) << std::endl;
+					std::cout << db.exists(commands[1]) << std::endl;
 				}
 				else if (commands[0] == "set" && commands.size() == 3) {
 					db.set(commands[1], commands[2]);
