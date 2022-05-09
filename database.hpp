@@ -28,7 +28,7 @@ public:
 	 * 
 	 * @return вектор ключей 
 	 */	
-	std::vector<std::string> keys() const;
+	std::vector<std::string> keys(std::string pattern) const;
 
 	/**
 	 * Проверить сущестование ключа
@@ -131,11 +131,19 @@ void DataBase::save() {
 	fout.close();
 }
 
-// TODO make pattern search
-std::vector<std::string> DataBase::keys() const {
+std::vector<std::string> DataBase::keys(std::string pattern) const {
+	// parse pattern to regex format
+	std::string regStr = "^" + pattern + "$";
+	regStr = std::regex_replace(regStr, std::regex("\\*"), ".*");
+	regStr = std::regex_replace(regStr, std::regex("\\?"), ".?");
+	const std::regex regular(regStr);
+	
 	std::vector<std::string> keys;
 	for (const auto& elem : _data) {
-		keys.push_back(elem.first);
+		std::smatch result;
+		if (std::regex_search(elem.first, result, regular)) {
+			keys.push_back(elem.first);
+		}
 	}
 	return keys;
 }
