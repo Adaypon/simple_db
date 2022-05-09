@@ -58,6 +58,7 @@ void handler(std::vector<std::string> commands) {
 	}
 	else if (commands[0] == "set" && commands.size() == 3) {
 		db.set(commands[1], commands[2]);
+		db.save();
 		std::cout << "OK" << std::endl;
 	}
 	else if (commands[0] == "get" && commands.size() == 2) {
@@ -65,9 +66,11 @@ void handler(std::vector<std::string> commands) {
 	}
 	else if (commands[0] == "del" && commands.size() == 2) {
 		std::cout << std::boolalpha << db.del(commands[1]) << std::endl;
+		db.save();
 	}
 	else if (commands[0] == "flushall" && commands.size() == 1) {
 		db.flushAll();
+		db.save();
 		std::cout << "FLUSH" << std::endl;
 	}
 	else if (commands[0] == "print" && commands.size() == 1) {
@@ -92,5 +95,5 @@ int main() {
 		std::getline(std::cin, input);
 		handler(parseCommand(input));
 	}
-	return 0;	
+	return 0;
 }
