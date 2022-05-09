@@ -20,5 +20,14 @@ int main() {
 	db.set("name", "Vasya");
 	db.printMap();
 
+	std::cout << "\"" << db.get("key") << "\"" << std::endl;
+	
+	std::cout << "\"" << db.get("name") << "\"" << std::endl;
+
+	std::cout << "\"" << db.get("empty") << "\"" << std::endl;
+
+	db.set("space", " ");
+	std::cout << "\"" << db.get("space") << "\"" << std::endl;
+	
 	return 0;
 }

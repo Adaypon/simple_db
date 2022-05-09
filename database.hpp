@@ -50,7 +50,7 @@ public:
 	 * 
 	 * @param key ключ
 	 */
-	std::string get(std::string key, std::string defaultValue = "null") const;
+	std::string get(std::string key) const;
 
 
 	/**
@@ -138,6 +138,13 @@ void DataBase::set(std::string key, std::string value) {
 	else {
 		_data.emplace(key, value);
 	}
+}
+
+std::string DataBase::get(std::string key) const {
+	if (exists(key) && !(_data.at(key).empty())) {
+		return _data.at(key);
+	}
+	return "null";
 }
 
 void DataBase::printMap() {
