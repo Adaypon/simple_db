@@ -76,7 +76,7 @@ int main() {
 					std::cout << db.get(commands[1]) << std::endl;
 				}
 				else if (commands[0] == "del" && commands.size() == 2) {
-					std::cout << std::boolalpha << db.del(commands[1]) << std::endl;
+					std::cout << db.del(commands[1]) << std::endl;
 					db.save();
 				}
 				else if (commands[0] == "flushall" && commands.size() == 1) {

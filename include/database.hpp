@@ -59,7 +59,7 @@ public:
 	 * @param key ключ
 	 * @return false в случае если значения нет, true в случае успешного выполнения
 	 */
-	int del(std::string key);
+	bool del(std::string key);
 	
 	/**
 	 * Удалить все ключи и значения
@@ -174,15 +174,15 @@ std::string DataBase::get(std::string key) const {
 	return "null";
 }
 
-int DataBase::del(std::string key) {
+bool DataBase::del(std::string key) {
 	if (exists(key)) {
 		auto it = _data.find(key);
 		if (!(it->second.empty())) {
 			_data.erase(key);
-			return 1;
+			return true;
 		}
 	}
-	return 0;
+	return false;
 }
 
 void DataBase::flushAll() {
